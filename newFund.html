@@ -50,7 +50,7 @@
     					<a data-expectEarnRateMin="8.01" data-expectEarnRateMax="10.00">8.01%-10.00%</a>
     					<a data-expectEarnRateMin="10.01" data-expectEarnRateMax="">10.01%以上</a>
     				</li>
-    				<li>
+    				<!--<li>
     					<label>锁定期限:</label>
     					<a class="active" data-lockPeriodMin="" data-lockPeriodMax="">全部</a>
     					<a data-lockPeriodMin="0" data-lockPeriodMax="90">90天以下</a>
@@ -58,7 +58,7 @@
     					<a data-lockPeriodMin="181" data-lockPeriodMax="360">181-360天</a>
     					<a data-lockPeriodMin="361" data-lockPeriodMax="1080">361-1080天</a>        
     					<a data-lockPeriodMin="1081" data-lockPeriodMax="">1081天以上</a>
-    				</li>
+    				</li>-->
     			</ul>
     		</div>
     		<div class="newProduct">
@@ -68,73 +68,9 @@
     				<a class="active" data-orderColumn = "1">最新<input type="radio" checked hidden class="none"/> </a>
     				<a data-orderColumn = "2">按年化率<input type="radio" checked  hidden class="none"/></a>
     				<a data-orderColumn = "3">产品单价<input type="radio" checked hidden class="none"/></a>
-    				<a data-orderColumn = "4">锁定期<input type="radio" checked  hidden class="none"/></a>
+    				<!--<a data-orderColumn = "4">锁定期<input type="radio" checked  hidden class="none"/></a>-->
     			</p>
     			<dl>
-    				<!--<dd>
-    					<div class="clearfix">
-    						<label>优选理财</label>
-    						<a>标准理财产品</a>
-    						<a class="fr" href="newFundDetail.html">查看详情></a>
-    					</div>
-    					<div class="finacial-produce">
-    						<div>
-	    						<a><i>10.20%</i></a>
-	    						<a>年化收益</a>
-    						</div>
-    						<div>
-	    						<a>1年</a>
-	    						<a>锁定期</a>
-    						</div>
-							<div>
-	    						<a>1000元</a>
-	    						<a>起购金额</a>
-    						</div>
-    						<div>
-	    						<a>每月15日，按月返租</a>
-	    						<a>锁定期</a>
-    						</div>
-    						<div>
-	    						<a class="fr" href="newFundDetail.html">立即购买</a>
-    						</div>
-    					</div>
-    					<b></b>
-    					<div class="expect-day">
-    						<a>预计起息日：<i>2016-08-08</i></a>
-    					</div>
-    				</dd>
-    				<dd>
-    					<div class="clearfix">
-    						<label>优选理财</label>
-    						<a>标准理财产品</a>
-    						<a class="fr" href="newFundDetail.html">查看详情></a>
-    					</div>
-    					<div class="finacial-produce">
-    						<div>
-	    						<a><i>10.20%</i></a>
-	    						<a>年化收益</a>
-    						</div>
-    						<div>
-	    						<a>1年</a>
-	    						<a>锁定期</a>
-    						</div>
-							<div>
-	    						<a>1000元</a>
-	    						<a>起购金额</a>
-    						</div>
-    						<div>
-	    						<a>每月15日，按月返租</a>
-	    						<a>锁定期</a>
-    						</div>
-    						<div>
-	    						<a class="fr" href="newFundDetail.html">立即购买</a>
-    						</div>
-    					</div>
-    					<b></b>
-    					<div class="expect-day">
-    						<a>预计起息日：<i>2016-08-08</i></a>
-    					</div>
-    				</dd>-->
     			</dl>
     		</div>
     		<!--分页-->
@@ -156,8 +92,23 @@
 	</div>
 	<!--CONTENT_END-->
     <script type="text/javascript" src="js/footer.js" ></script>
+    <!--提示框-->
+	<div class="alert_box">
+		<div class="alert_cont"></div>
+		<label class="alert_btn">确定</label>
+	</div>
+	<!--有功能按钮-->
+	<div class="motai_box">
+		<div class="motai_cont"></div>
+		<p class="motai_p">
+			<label class="motai_btn motai_cancel">取消</label>
+			<label class="motai_btn motai_sure">确定</label>
+		</p>
+	</div>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/layer/layer.js" ></script>
+<script type="text/javascript" src="js/motai.js" ></script>
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/login.js" ></script>
 <script type="text/javascript" src="js/getData.js"></script>
@@ -230,10 +181,10 @@
 						strHtml +=	'<a class="fr" style="background:#ccc;">已售罄</a></div></div>'+
 		    					'</dd>';//<b></b><div class="expect-day"><a>预计起息日：<i>'+strFormat(productList[i].establishDate)+'</i></a></div>
 						break;
-					default:
-						strHtml +=	'<a class="fr" href="newFundDetail.html?productId='+productList[i].productId+'">立即购买</a></div></div>'+
-		    					'</dd>';//<b></b><div class="expect-day"><a>预计起息日：<i>'+strFormat(productList[i].establishDate)+'</i></a></div>
-						break;
+//					default:
+//						strHtml +=	'<a class="fr" href="newFundDetail.html?productId='+productList[i].productId+'">立即购买</a></div></div>'+
+//		    					'</dd>';//<b></b><div class="expect-day"><a>预计起息日：<i>'+strFormat(productList[i].establishDate)+'</i></a></div>
+//						break;
 						
 				}
 			}

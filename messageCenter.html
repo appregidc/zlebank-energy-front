@@ -60,8 +60,8 @@
 	        				<li class="" ><a id="allmessage" data-filter="" class="active" href="javascript:;">所有消息<i class="unreadCount">(3)</i></a></li>
 	        				<li class="" ><a data-filter="0"  href="javascript:;">系统消息<i class="unreadCount" style="display:none;">(3)</i></a></li>
 	        				<li class="nob" ><a data-filter="1"  href="javascript:;">业务消息<i class="unreadCount" style="display:none;">(3)</i></a></li>
-	        				<li class="nob"><a class="col3" onclick="asRead();">标记为已读</a></li>
-	        				<li class="nob" onclick="cancelSel();">删除</li>
+	        				<li class="nob"><a class="col3" onclick="asRead();" href="javascript:;">标记为已读</a></li>
+	        				<li class="nob" onclick="cancelSel();" style="cursor:pointer;">删除</li>
 	        			</ul>
         			</div>
         			<table border="0" cellpadding="0" cellspacing="0" class="asset_wrap">
@@ -73,30 +73,6 @@
                                 <th>状态</th>
                                 <th>时间</th>
                             </tr>
-                          <!-- <tr>
-                                <td class="nobor"><input name="id" type="checkbox" class="checkBox" /></td>
-                                <td class="nobor">系统消息</td>
-                                <td class="nobor click_style" onclick="messShow(this);">首次购买成功</td>
-                                <td class="nobor">解锁50元、80元红包</td>
-
-                                <td class="nobor">2016-04-01  11:36：29</td>
-                            </tr>
-                            <tr class="font_e60012">
-                                <td class="nobor"><input name="id" type="checkbox" class="checkBox" /></td>
-                                <td class="nobor">系统消息</td>
-                                <td class="nobor click_style" onclick="messShow(this);">首次购买成功</td>
-                                <td class="nobor">解锁50元、80元红包</td>
-
-                                <td class="nobor">2016-04-01  11:36：29</td>
-                            </tr>
-                            <tr>
-                                <td class="nobor"><input name="id" type="checkbox" class="checkBox" /></td>
-                                <td class="nobor">系统消息</td>
-                                <td class="nobor click_style" onclick="messShow(this);">首次购买成功</td>
-                                <td class="nobor">解锁50元、80元红包</td>
-
-                                <td class="nobor">2016-04-01  11:36：29</td>
-                            </tr>-->
                         </tbody>
                     </table>
                     <div class="message_comm none">
@@ -141,8 +117,23 @@
 	    	</div>
     	</div>
     </div>
+    <!--提示框-->
+	<div class="alert_box">
+		<div class="alert_cont"></div>
+		<label class="alert_btn">确定</label>
+	</div>
+	<!--有功能按钮-->
+	<div class="motai_box">
+		<div class="motai_cont"></div>
+		<p class="motai_p">
+			<label class="motai_btn motai_cancel">取消</label>
+			<label class="motai_btn motai_sure">确定</label>
+		</p>
+	</div>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/layer/layer.js" ></script>
+<script type="text/javascript" src="js/motai.js" ></script>
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/message.js" ></script> 

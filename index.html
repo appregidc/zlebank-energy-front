@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-	<title>首页</title>
-	<link rel="stylesheet" href="css/common.css" type="text/css"/>
-	<link rel="stylesheet" href="css/home.css" type="text/css"/>
-</head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+		<title>首页</title>
+		<link rel="stylesheet" href="css/common.css" type="text/css"/>
+		<link rel="stylesheet" href="css/home.css" type="text/css"/>
+	</head>
 	<body>
 	    <script type="text/javascript" src="js/header.js" ></script>
 	    <div class="banner">
@@ -53,7 +53,7 @@
 		<div class="product-wrap">
 			<div class="recommend-list">
 				<script type="x-dot-template" id="recommend-list">
-					{{for(var i in it){}}
+					{{for(var i=0; i<it.length;i++){}}
 						<div class="recommend-list-item">
 							<label></label>
 							<div class="recommend-produce fl">
@@ -94,38 +94,12 @@
 							{{?}}
 						</div>
 					{{}}}
-					<!--<div class="recommend-list-item">
-						<label></label>
-						<div class="recommend-produce fl">
-							<em>{{=it[1].productName}}</em>
-							<div>
-								<ul class="clearfix">
-									<li>
-										<a id="second-rate">{{=it[1].expectEarnRate}}%</a>
-										<a>年化收益率</a>
-									</li>
-									<li>
-										<a id="second-date">{{=it[1].financeScale}}</a>
-										<a>融资规模</a>
-									</li>
-									<li>
-										<a id="second-sum">{{=it[1].money}}元</a>
-										<a>起购金额</a>
-									</li>
-									<li>
-										<a class="checkBtn" href='newFundDetail.html?productId={{=it[1].productId}}'>查看详情</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<img src="img/standard.jpg" class="fr" onclick="openNext();"/>
-					</div>-->
 				</script>
 			</div>
 			<p>优选理财</p>
 			<div class="financial-wrap">
 				<script type="x-dot-template" id="showData">
-					{{for(var i in it){}}
+					{{for(var i=0; i<it.length;i++){}}
 						<div class="financial-item">
 							<dl>
 								<dd><h2>{{=it[i].productName}}</h2></dd>
@@ -133,7 +107,6 @@
 								<dd>年化收益率</dd>
 								<dd class="br"></dd>
 								<dd>{{=it[i].money}}元起购</dd>
-								<!--<dd>按月申赎</dd>-->
 								<dd>{{=it[i].repayMode}}</dd>
 								<dd>稳固收益</dd>
 								<dd>
@@ -145,45 +118,6 @@
 							</dl>
 						</div>
 					{{}}}
-					<!--<div class="financial-item">
-						<dl>
-							<dd><h2>标准理财产品</h2></dd>
-							<dd><i>5.50~8.30%</i></dd>
-							<dd>年化收益率</dd>
-							<dd class="br"></dd>
-							<dd>5万~100万起购</dd>
-							<dd>按月申赎</dd>
-							<dd>按月付息</dd>
-							<dd>稳固收益</dd>
-							<dd><a href="newProductDetail.html">立即查看</a></dd>
-						</dl>
-					</div>
-					<div class="financial-item">
-						<dl>
-							<dd><h2>标准理财产品</h2></dd>
-							<dd><i>5.50~8.30%</i></dd>
-							<dd>年化收益率</dd>
-							<dd class="br"></dd>
-							<dd>5万~100万起购</dd>
-							<dd>按月申赎</dd>
-							<dd>按月付息</dd>
-							<dd>稳固收益</dd>
-							<dd><a href="newProductDetail.html">立即查看</a></dd>
-						</dl>
-					</div>
-					<div class="financial-item">
-						<dl>
-							<dd><h2>标准理财产品</h2></dd>
-							<dd><i>5.50~8.30%</i></dd>
-							<dd>年化收益率</dd>
-							<dd class="br"></dd>
-							<dd>5万~100万起购</dd>
-							<dd>按月申赎</dd>
-							<dd>按月付息</dd>
-							<dd>稳固收益</dd>
-							<dd><a href="newProductDetail.html">立即查看</a></dd>
-						</dl>
-					</div>-->
 				</script>
 			</div>
 			<p>最新资讯</p>
@@ -239,23 +173,22 @@
     	</div>
 	    <script type="text/javascript" src="js/footer.js" ></script>
 	    <!--提示框-->
-	<div class="alert_box">
-		<div class="alert_cont"></div>
-		<label class="alert_btn">确定</label>
-	</div>
-	<!--有功能按钮-->
-	<div class="motai_box">
-		<div class="motai_cont"></div>
-		<p class="motai_p">
-			<label class="motai_btn motai_cancel">取消</label>
-			<label class="motai_btn motai_sure">确定</label>
-		</p>
-	</div>
-</body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/layer/layer.js"></script>
-<script type="text/javascript" src="js/motai.js"></script>
-	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+		<div class="alert_box">
+			<div class="alert_cont"></div>
+			<label class="alert_btn">确定</label>
+		</div>
+		<!--有功能按钮-->
+		<div class="motai_box">
+			<div class="motai_cont"></div>
+			<p class="motai_p">
+				<label class="motai_btn motai_cancel">取消</label>
+				<label class="motai_btn motai_sure">确定</label>
+			</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
+	<script type="text/javascript" src="js/layer/layer.js"></script>
+	<script type="text/javascript" src="js/motai.js"></script>
 	<script type="text/javascript" src="js/doT.min.js"></script>
 	<script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/login.js" ></script>
@@ -291,7 +224,7 @@
 							var telText = doT.template($("#recommend-list").html());
 							$(".recommend-list").html(telText(data));
 						}else{
-							console.log("暂无产品");
+							$(".recommend-list").html("暂无产品");
 						}
 					}else{
 						//会话过期，返回登录页面

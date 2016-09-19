@@ -1,11 +1,11 @@
-/*
+﻿/*
  * 静态页面渲染完之后加载数据
  */
 //查询总的记录数
 //totalNum是总条数，num是总页数，count是每页显示几条，startIndex起始索引，endIndex最终索引，nowPage是当前页码,maxNum是最大页码数是5个
 var totalNum,num,count=5,startIndex=endIndex=0,maxNum=5;
 var nowPage = parseInt($("input[type='hidden']").attr("data-nowPage"));
-function queryTotalNum(productType,unitCostMin,unitCostMax,expectEarnRateMin,expectEarnRateMax,lockPeriodMin,lockPeriodMax,orderFlag,orderColumn){
+function queryTotalNum(){
 	var dataJson = {
 		"productType":productType,
 		"unitCostMinY":unitCostMin,
@@ -52,7 +52,7 @@ function queryTotalNum(productType,unitCostMin,unitCostMax,expectEarnRateMin,exp
 						}else{
 							$(".pagination").addClass("none");
 						}
-						getOnepageRC(productType,unitCostMin,unitCostMax,expectEarnRateMin,expectEarnRateMax,lockPeriodMin,lockPeriodMax,orderFlag,orderColumn);
+						getOnepageRC();
 					}else{
 						$(".newProduct dl").html("<dd style='text-align:center;color:#666'>暂无数据</dd>");
 						$(".pagination").addClass("none");
@@ -69,79 +69,48 @@ function queryTotalNum(productType,unitCostMin,unitCostMax,expectEarnRateMin,exp
 		}
 	});
 }
-var lastNum = maxNum + 5;//每页显示的最后的一个页码数
-var startNum = maxNum + 1;
+var lastNum = maxNum;//每页显示的最后的一个页码数
+var startNum = 1;
 // 分页跳转
 function jump(now){
 	nowPage = now;
 	$(".pagination ul li").removeClass("pagin_active");
 	var items = $(".pagination ul li");
+	var pageHtml = '';
 	if(num > maxNum){ //总页数大于最大允许显示数目
-		if(nowPage > maxNum){ //当前页是最大页数时
-			var pageHtml = '';
-			if(lastNum <= num){
-				if(nowPage == num){
-					lastNum = nowPage;
-					startNum = lastNum - maxNum + 1;
-					for(var j=startNum;j<=lastNum;j++){
-						pageHtml += '<li '+(nowPage==j?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j)+',this)" href="javascript:;">'+(j)+'</a></li>';
-					}
-				}else if(nowPage >= startNum){   //当前页在目前显示的范围内
-					if(nowPage > lastNum){
-						startNum = lastNum + 1;
-						lastNum = ((lastNum + maxNum) > num ? num : (lastNum + maxNum));
-					}
-					for(var j=startNum;j<=lastNum;j++){
-						pageHtml += '<li '+(nowPage==j?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j)+',this)" href="javascript:;">'+(j)+'</a></li>';
-					}
-				}else{   //当前显示的开始页的上一页
-					lastNum = nowPage;
-					startNum = lastNum - maxNum + 1;
-					for(var j=startNum;j<=lastNum;j++){
-						pageHtml += '<li '+(nowPage==j?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j)+',this)" href="javascript:;">'+(j)+'</a></li>';
-					}
-				}
-			}else{
-				for(var j=startNum;j<=num;j++){
-					pageHtml += '<li '+(nowPage==j?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j)+',this)" href="javascript:;">'+(j)+'</a></li>';
-				}
-			}
-			$(".pagination ul").html(pageHtml);
-		}else{
-			var pageHtml = '';
-			for(var j=0;j<maxNum;j++){
-				pageHtml += '<li '+(nowPage==(j+1)?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j+1)+',this)" href="javascript:;">'+(j+1)+'</a></li>';
-			}
-			$(".pagination ul").html(pageHtml);
+		if(now <= lastNum && now >= startNum){  //当前页在设定的开始页码（包含）和结束页码（包含）时
+			lastNum = lastNum;
+			startNum = startNum;
+		}else if(now > lastNum){//当前页码大于设定的结束页码时
+			startNum = lastNum + 1;
+			lastNum = ((startNum+maxNum-1) > num ? num : startNum+maxNum-1);
+		}else if(now < startNum){
+			lastNum = startNum - 1;
+			startNum = lastNum - maxNum + 1;
 		}
+	}else{
+		lastNum = num;
 	}
-	for(var i = 0;i<=items.length;i++){
-		if(nowPage > maxNum){
-			if(nowPage == (i+5)){
-				$(items[i]).addClass("pagin_active");
-			}
-		}else{
-			if(nowPage == (i+1)){
-				$(items[i]).addClass("pagin_active");
-			}
-		}
+	for(var j=startNum;j<=lastNum;j++){
+		pageHtml += '<li '+(nowPage==(j)?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j)+',this)" href="javascript:;">'+(j)+'</a></li>';
 	}
+	$(".pagination ul").html(pageHtml);
 	// 当总页数大于最大显示页码个数时，显示上一页和下一页按钮
 	if(num > maxNum){
 		//当前页码大于1时，显示上一页按钮
-		if(nowPage > 1){
+		if(nowPage > maxNum){
 			$(".pagination a[title='上一页']").removeClass("none");
 		}else{
 			$(".pagination a[title='上一页']").addClass("none");
 		}
-		if(nowPage >= num || lastNum == num){
+		if(nowPage >= num && lastNum == num){
 			$(".pagination a[title='下一页']").addClass("none");
 		}else{
 			$(".pagination a[title='下一页']").removeClass("none");
 		}
 	}
 	startIndex = (nowPage-1)*count;
-	getOnepageRC(productType,unitCostMin,unitCostMax,expectEarnRateMin,expectEarnRateMax,lockPeriodMin,lockPeriodMax,orderFlag,orderColumn);
+	getOnepageRC();
 }
 //上一页
 function prePage(){
@@ -163,7 +132,7 @@ function lastPage(){
  * 分页获取充值记录
  */
 var elLen = $(".asset_wrap_tit tr td").length;
-function getOnepageRC(productType,unitCostMin,unitCostMax,expectEarnRateMin,expectEarnRateMax,lockPeriodMin,lockPeriodMax,orderFlag,orderColumn){
+function getOnepageRC(){
 	var dataJson = {
 		"productType":productType,
 		"unitCostMinY":unitCostMin,
@@ -171,7 +140,7 @@ function getOnepageRC(productType,unitCostMin,unitCostMax,expectEarnRateMin,expe
 		"expectEarnRateMin":expectEarnRateMin,
 		"expectEarnRateMax":expectEarnRateMax,
 		"bLockPeriodMin":lockPeriodMin,
-		"blockPeriodMax":lockPeriodMax,
+		"bLockPeriodMax":lockPeriodMax,
 		"orderFlag":orderFlag,
 		"orderColumn":orderColumn,
 		"startIndex":startIndex,
@@ -209,7 +178,7 @@ function getOnepageRC(productType,unitCostMin,unitCostMax,expectEarnRateMin,expe
 //	screen();
 //});
 //点击产品单价筛选
-$(".product-wrap ul li:nth-child(1) a").live("click",function(e){
+$(".product-wrap ul li:nth-child(1) a").on("click",function(e){
 	nowPage = 1;
 	startIndex = 0;
 	$(".product-wrap ul li:nth-child(1) a").removeClass("active");
@@ -217,7 +186,7 @@ $(".product-wrap ul li:nth-child(1) a").live("click",function(e){
 	screen();
 });
 //点击年化收益筛选
-$(".product-wrap ul li:nth-child(2) a").live("click",function(e){
+$(".product-wrap ul li:nth-child(2) a").on("click",function(e){
 	nowPage = 1;
 	startIndex = 0;
 	$(".product-wrap ul li:nth-child(2) a").removeClass("active");
@@ -225,7 +194,7 @@ $(".product-wrap ul li:nth-child(2) a").live("click",function(e){
 	screen();
 });
 //点击锁定期限筛选
-$(".product-wrap ul li:nth-child(3) a").live("click",function(e){
+$(".product-wrap ul li:nth-child(3) a").on("click",function(e){
 	nowPage = 1;
 	startIndex = 0;
 	$(".product-wrap ul li:nth-child(3) a").removeClass("active");
@@ -233,7 +202,7 @@ $(".product-wrap ul li:nth-child(3) a").live("click",function(e){
 	screen();
 });
 //点击排序
-$(".newProduct p a").live("click",function(e){
+$(".newProduct p a").on("click",function(e){
 	nowPage = 1;
 	startIndex = 0;
 	$(".newProduct p a").removeClass("active");
@@ -272,12 +241,12 @@ function screen(){
 	for(var i=0;i<els.length;i++){
 		if($(els[i]).hasClass("active")){
 			orderColumn=$(els[i]).data("ordercolumn");
-			if($($(els[i]).children("input")).attr("checked")){
-				orderFlag = "0";
+			if(!$($(els[i]).children("input")).attr("checked")){
+				orderFlag = "0"; //降序
 			}else{
-				orderFlag = "1";
+				orderFlag = "1"; //升序
 			}
 		}
 	}
-	queryTotalNum(productType,unitCostMin,unitCostMax,expectEarnRateMin,expectEarnRateMax,lockPeriodMin,lockPeriodMax,orderFlag,orderColumn);
+	queryTotalNum();
 }

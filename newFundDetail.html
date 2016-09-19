@@ -16,7 +16,7 @@
 			<div class="buyOrder-form">
 				<div>
 					<label>输入金额（元）</label>
-					<input type="text" name="money" onkeyup="getMoney(this.value,this,event)" onkeydown="" placeholder="0" value=""/>
+					<input type="text" name="money" onkeyup="value=value.replace(/[^\d.]/g,'');getMoney(this.value,this,event);" onkeydown="value=value.replace(/[^\d.]/g,'')" placeholder="0" value=""/>
 					<label>每日收益<i id="dayProfit">0</i>元</label><label>,最多投资<i id="totalMoney">0</i>元</label>
 					<input type="submit" name="sureBuy" value="确认购买"></input>
 					<a href="agreenment.html">《证联互金认购合同》</a><a href="agreenment.html">《证联互金认购说明》</a>
@@ -188,13 +188,11 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/login.js" ></script>
-<!--<script type="text/javascript" src="js/highcharts.js" ></script>-->
 <script type="text/javascript">
 	var num;//数量
 	var orderInfo = {};
@@ -215,7 +213,7 @@
 						dayProfit = data.expectEarnRate;
 						unitcost = data.unitCost;
 						financeScale = data.financeScale;
-						totalMoney = data.investMax;
+						totalMoney = parseFloat(data.investMax) * parseFloat(unitcost);
 						$("#totalMoney").html(changeNum(totalMoney));
 						repayMode = data.repayMode;
 						if(repayMode == "1"){
@@ -244,7 +242,7 @@
 		switch (productStatus){
 			case "03":
 				$("input[name='sureBuy']").css("background","#FF5252");
-				$("input[name='sureBuy']").attr("disabled","");
+				$("input[name='sureBuy']").attr("disabled",false);
 				$("input[name='sureBuy']").val("立即购买");
 				break;
 			case "04":
@@ -263,38 +261,31 @@
 				$("input[name='sureBuy']").val("已售罄");
 				break;
 			default:
+				$("input[name='sureBuy']").css("background","#FF5252");
+				$("input[name='sureBuy']").attr("disabled",false);
+				$("input[name='sureBuy']").val("立即购买");
 				break;
 		}
 	}
 //	点击购买
-	$("input[name='sureBuy']").live("click",function(e){
+	$("input[name='sureBuy']").on("click",function(e){
 		if(!nickName && !userName){
-//			alert("请您先登录再购买");
-//			location.href = "login.html";
 			motai("请您先登录再购买","login.html");
 			return;
 		}
 		if(!custId){
-//			alert("登录超时，请重新登录");
-//			location.href = "login.html";
 			motai("登录超时，请重新登录","login.html");
 			return;
 		}
 		if(isPassIdentify == "0"){
-//			alert("请先去实名认证");
-//			location.href = "realName_identify.html";
 			motai("请先去实名认证","realName_identify.html");
 			return;
 		}
 		if(isBindCard == "0"){
-//			alert("请先去绑卡");
-//			location.href = "bind_BankCard.html";
 			motai("请先去绑卡","bind_BankCard.html");
 			return;
 		}
 		if(isSetTradePwd == "0"){
-//			alert("请先去设置交易密码");
-//			location.href = "pasManagement.html?pageName=setTradePas";
 			motai("请先去设置交易密码","pasManagement.html?pageName=setTradePas");
 			return;
 		}
@@ -337,21 +328,31 @@
 	function getMoney(mon,el,e){
 		if(!mon){return;}
 		if(!isNumber(e.keyCode)){
-			alerts("请输入整数");
+			alerts("金额为整数或保留到分");
 			$(el).val("");
-			$("#dayProfit").html("");
+			$("#dayProfit").html("0");
 			return;
 		}
-		if(parseFloat(mon) > parseFloat(totalMoney)){
+		var dot = mon.indexOf(".");
+		if(dot > -1){
+			var dotCnt = mon.substring(dot+1,num.length);
+            if(dotCnt.length > 2){
+                alerts("金额为整数或保留到分");
+                $(el).val("");
+				$("#dayProfit").html("0");
+                return;
+            }
+		}
+		if(parseFloat(mon) > 200){
 			alerts("超出剩余库存量,请重新输入");
 			$(el).val("");
-			$("#dayProfit").html("");
+			$("#dayProfit").html("0");
 			return;
 		}
 		Utils.ajax({
 			url:"/restful/calculator/expben",
 			type:"post",
-			data:{"investAmt":mon,"repayMode":repayMode,"investPeriodDay":investPeriodDay,"investPeriodMonth":investPeriodMonth,"yearRate":yearRate,"yearDay":"360"},
+			data:{"investAmt":parseFloat(mon),"repayMode":repayMode,"investPeriodDay":investPeriodDay,"investPeriodMonth":investPeriodMonth,"yearRate":yearRate,"yearDay":"360"},
 			success:function(data,xml){
 				if(data.meta.success){
 					if(data.data){
@@ -371,7 +372,7 @@
 		});
 	}
 	//点击切换图表
-	$(".fund-items-data ul li").live("click",function(e){
+	$(".fund-items-data ul li").on("click",function(e){
 		$(".fund-items-data ul li").removeClass("active")
 		$(this).addClass("active");
 		if($(".fund-items-data ul li:first-child").hasClass("active")){

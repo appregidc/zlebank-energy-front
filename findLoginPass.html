@@ -32,7 +32,7 @@
 						</div>
 						<div>
 							<a>验证码：</a>
-							<input type="text" name="code" />
+							<input type="text" name="code" onblur="testCode(this.value,this)"/>
 							<a class="codeBtn btn">获取验证码</a>
 						</div>
 						<div class="btn fr" onclick="nextStep();">下一步</div>
@@ -40,11 +40,11 @@
 					<div class="secondStep clearfix none">
 						<div>
 							<a>新登录密码：</a>
-							<input type="password" name="newPas" />
+							<input type="password" name="newPas" maxlength="20" onblur="testPas(this.value,this)"/>
 						</div>
 						<div>
 							<a>确认新登录密码：</a>
-							<input type="password" name="confirmPas" />
+							<input type="password" name="confirmPas" maxlength="20" onblur="testPas(this.value,this)"/>
 						</div>
 						<div class="btn fl" onclick="prevStep();">上一步</div>
 						<div class="btn fr" onclick="nextStep();">下一步</div>
@@ -71,17 +71,16 @@
 			</p>
 		</div>
 	</body>
-	<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 	<script type="text/javascript" src="js/layer/layer.js"></script>
 	<script type="text/javascript" src="js/motai.js"></script>
-	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 	<script type="text/javascript" src="js/tools.js" ></script>
 	<script type="text/javascript" src="js/login.js" ></script>
 	<script type="text/ecmascript" src="js/md5.js"></script>
 	<script type="text/javascript">
 		var telNo,codeValue;
 //		获取验证码			
-		$(".firstStep .codeBtn").live("click",function(e){
+		$(".firstStep .codeBtn").on("click",function(e){
 			if($(e.target).data("lock")){
 				return;
 			}
@@ -93,33 +92,51 @@
 				return;
 			}
 			countDownReg($(e.target));
-			var dataJSON={"phoneNum":telNo,"certBusCase":"07"};
+			//检测手机号是否注册过
 			Utils.ajax({
-				url:"/restful/idencode/sendMsgCode",
-				type:"POST",
-				data:dataJSON,
-				success: function (response, xml) {
-	            	// 此处放成功后执行的代码
+		        url: "/restful/user/registe/check",              //请求地址
+		        type: "POST",                       			   //请求方式
+		        data: {"checkType":"1","loginName":telNo},         				   //请求参数
+		        success: function (response, xml) {
+		            // 此处放成功后执行的代码
 		            if(response.meta.success){
-			        	
+		            	if(response.data){
+			            	var isReg = response.data.isRegisted;
+			            	if(parseInt(isReg)){
+								var dataJSON={"phoneNum":telNo,"certBusCase":"07"};
+								Utils.ajax({
+									url:"/restful/idencode/sendMsgCode",
+									type:"POST",
+									data:dataJSON,
+									success: function (response, xml) {
+						            	// 此处放成功后执行的代码
+							            if(response.meta.success){
+								        	
+							            }else{
+							            	//会话过期，返回登录页面
+											if(response.meta.message.indexOf("请您先登录")>-1){
+												location.href = "timeOut.html";
+												return;
+											}
+											//alert(response.meta.message);
+											alerts(response.meta.message);
+							            }
+							        }
+								});
+			            	}
+		            	}
 		            }else{
-		            	//会话过期，返回登录页面
-						if(response.meta.message.indexOf("请您先登录")>-1){
-							location.href = "timeOut.html";
-							return;
-						}
-						//alert(response.meta.message);
-						alerts(response.meta.message);
+		            	alerts(response.meta.message);
 		            }
 		        }
-			});
+		    });
 		})
 		function nextStep(){
 			if(!$(".firstStep").hasClass("none")){
 				telNo = $("input[name='telNum']").val();
 				if(!isPhoneNum(telNo)){alerts("手机号不正确，请重新填写");return;}
 				codeValue = $("input[name='code']").val();
-				isEmpty(codeValue,"请填写验证码");
+				if(!codeValue || codeValue == ""){alerts("请填写验证码");return;}
 				$(".firstStep").addClass("none");
 				$(".secondStep").removeClass("none");
 				$(".password_nav ul li a").removeClass("active");
@@ -127,11 +144,11 @@
 				$(".password_nav ul").css("background-position","14% bottom");
 			}else if(!$(".secondStep").hasClass("none")){
 				var passValue = $("input[name='newPas']").val();
-				isEmpty(passValue,"请填写密码");
+				if(!passValue || passValue == ""){alerts("请填写密码");return;}
 				var passCon = $("input[name='confirmPas']").val();
-				isEmpty(passCon,"请填写确认密码");
+				if(!passCon || passCon == ""){alerts("请填写确认密码");return;}
 				if(passValue != passCon){
-					alerts("两次填写不一样");
+					alerts("两次密码填写不一样");
 					return;
 				}
 				Utils.ajax({

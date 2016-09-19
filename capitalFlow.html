@@ -149,8 +149,23 @@
 	    </div>
 	</div>
 	<script type="text/javascript" src="js/footer.js" ></script>
+	<!--提示框-->
+	<div class="alert_box">
+		<div class="alert_cont"></div>
+		<label class="alert_btn">确定</label>
+	</div>
+	<!--有功能按钮-->
+	<div class="motai_box">
+		<div class="motai_cont"></div>
+		<p class="motai_p">
+			<label class="motai_btn motai_cancel">取消</label>
+			<label class="motai_btn motai_sure">确定</label>
+		</p>
+	</div>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script src="js/jquery.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/layer/layer.js" ></script>
+<script type="text/javascript" src="js/motai.js" ></script>
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/laydate.js"></script>
@@ -159,7 +174,6 @@
 //请求地址 httpUrlCount：查询总条数，httpUrlQuery：查询对应条件的数据
 	var httpUrlCount = "/restful/tradeorder/queryfundCount";
 	var httpUrlQuery = "/restful/tradeorder/queryfund";
-	var recentTime,nowTime,status="01";
 	var orderId = "";
 	queryTotalNum();
 	//得到数据后渲染页面
@@ -169,20 +183,6 @@
 			var telp = '';
 			var benefit,state,type,expend;
 			for(var i = 0;i<data.length;i++){
-//				switch(data[i].status){
-//					case "1":
-//						state = "充值成功";
-//						break;
-//					case "2":
-//						state = "处理中";
-//						break;
-//					case "3":
-//						state = "充值失败";
-//						break;
-//					default:
-//						state = "受理成功";
-//						break;
-//				}
 				benefit = data[i].benefit + "元";
 				expend = data[i].expend + "元";
 				if(!data[i].benefit){
@@ -225,7 +225,6 @@
 	}
 	//根据订单号跳转到交易记录页面
 	function openTrade(orderId){
-//		localStorage.setItem("orderId",orderId);
 		location.href = "rechargeRecord.html?orderId="+orderId;
 	}
 </script>

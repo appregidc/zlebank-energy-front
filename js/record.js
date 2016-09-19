@@ -2,6 +2,7 @@
  * 静态页面渲染完之后加载数据
  */
 var startTime,endTime;
+var recentTime,nowTime,status="";
 //日期范围限制
 var start = {
     elem: '#start',
@@ -50,6 +51,7 @@ function queryTotalNum(){
 		"endDate":nowTime
 	};
 	if(httpUrlCount.indexOf("queryfundCount")>-1){
+		status = "01";
 		dataJson["type"] = status;
 	}else{
 		dataJson["status"] = status;
@@ -108,7 +110,7 @@ function queryTotalNum(){
 		}
 	});
 }
-var lastNum = (maxNum > num ? num : maxNum);//每页显示的最后的一个页码数
+var lastNum = maxNum;//每页显示的最后的一个页码数
 var startNum = 1;
 // 分页跳转
 function jump(now){
@@ -117,34 +119,23 @@ function jump(now){
 	var items = $(".pagination ul li");
 	var pageHtml = '';
 	if(num > maxNum){ //总页数大于最大允许显示数目
-		if(now <= lastNum && now >= startNum){
+		if(now <= lastNum && now >= startNum){  //当前页在设定的开始页码（包含）和结束页码（包含）时
 			lastNum = lastNum;
 			startNum = startNum;
-		}else if(now > lastNum){
+		}else if(now > lastNum){//当前页码大于设定的结束页码时
 			startNum = lastNum + 1;
 			lastNum = ((startNum+maxNum-1) > num ? num : startNum+maxNum-1);
 		}else if(now < startNum){
 			lastNum = startNum - 1;
 			startNum = lastNum - maxNum + 1;
 		}
+	}else{
+		lastNum = num;
 	}
 	for(var j=startNum;j<=lastNum;j++){
 		pageHtml += '<li '+(nowPage==(j)?"class=\"pagin_active\"":"")+'><a onclick="jump('+(j)+',this)" href="javascript:;">'+(j)+'</a></li>';
 	}
 	$(".pagination ul").html(pageHtml);
-//	for(var i = 0;i<=items.length;i++){
-////		lastNum = nowPage;
-////		startNum = lastNum - maxNum + 1; 
-//		if(nowPage > maxNum){
-//			if(nowPage == (i+5)){
-//				$(items[i]).addClass("pagin_active");
-//			}
-//		}else{
-//			if(nowPage == (i+1)){
-//				$(items[i]).addClass("pagin_active");
-//			}
-//		}
-//	}
 	// 当总页数大于最大显示页码个数时，显示上一页和下一页按钮
 	if(num > maxNum){
 		//当前页码大于1时，显示上一页按钮
@@ -224,7 +215,7 @@ var preDate = new Date();
 preDate.setDate(preDate.getDate()-7);
 
 //点击日期条件筛选
-$("#dateFilter ul li a").live("click",function(e){
+$("#dateFilter ul li a").on("click",function(e){
 	nowPage = 1;
 	startIndex = 0;
 	startTime,endTime="";
@@ -246,10 +237,10 @@ $("#dateFilter ul li a").live("click",function(e){
 			status = $(state[i]).attr("data-filter");
 		}
 	}
-	queryTotalNum(recentTime,nowTime,status);
+	queryTotalNum();
 });
 //点击状态筛选
-$("#statusFilter ul li a").live("click",function(e){
+$("#statusFilter ul li a").on("click",function(e){
 	nowPage = 1;
 	startIndex = 0;
 	$("#statusFilter ul li a").removeClass("active")
@@ -278,7 +269,7 @@ $("#statusFilter ul li a").live("click",function(e){
 });
 
 //点击搜索
-$(".btntwo").live("click",function(){
+$(".btntwo").on("click",function(){
 	startTime = $("#start").val();
 	endTime = $("#end").val();
 	if(!startTime){alerts("请选择开始日期");return;}
@@ -297,6 +288,8 @@ $(".btntwo").live("click",function(){
 			status = $(state[i]).attr("data-filter");
 		}
 	}
-	
-	queryTotalNum(startTime,endTime,status);
+	recentTime = startTime;
+	nowTime = endTime;
+	state = state;
+	queryTotalNum();
 });

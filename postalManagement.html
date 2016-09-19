@@ -83,7 +83,7 @@
     			<div class="poatalManage clearfix">
     				<p>可用金额:<i>1.00</i>元</p>
     				<div><a>提现金额:</a><input type="text" name="postalMoney" onblur="checkMoney(this.value,this);" placeholder="提现金额" /></div>
-    				<div><a>交易密码:</a><input type="password" name="tradePassw" placeholder="交易密码" value=""/></div>
+    				<div><a>交易密码:</a><input type="password" name="tradePassw" placeholder="交易密码" value="" onblur="testPas(value,el);"/></div>
     				<div class="btn">提交</div>
     			</div>
     			<div class="rechange_tips">
@@ -115,10 +115,9 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/doT.min.js" ></script>
@@ -130,13 +129,15 @@
 		$(".poatalManage i").text(balance);
 	})
 	function checkMoney(money,el){
+		if(!money){return;}
 		if(money <= 0){alerts("提现金额大于零");$(el).val("");return;}
-		var isMon = /^\d*?\.?\d*?$/
+		var isMon = /^\d*?\.?\d{2}?$/;
 		if(!isMon.test(money)){
-			alerts("金额为数字,请重新输入");
+			alerts("金额为数字或只能保留到分,请重新输入");
 			$(el).val("");
 			return;
 		}
+		if(parseFloat(money) > parseFloat(balance)){alerts("提现金额不可大于余额");$(el).val("");return;}
 	}
 //	查询默认绑卡信息
 	Utils.ajax({
@@ -178,7 +179,7 @@
         }
 	});
 	//点击提交
-	$(".poatalManage .btn").live("click",function(){
+	$(".poatalManage .btn").on("click",function(){
 		var postalMoney = $("input[name='postalMoney']").val();//提现金额
 		if(!postalMoney){alerts("请填写金额");return;}
 		if(postalMoney == 0){alerts("提现金额大于零");return;}

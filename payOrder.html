@@ -40,7 +40,7 @@
             	<div class="payWrap">
             		<div class="payWrap_radio">
             			<input type="radio" name="payWay" value="00" tabindex="1" class="wayOne" onchange="checkBanlance(this);"/>
-            			<em>账户现金余额直接购买<i style="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余额不足，请重新选择充值方式或去充值</i> </em>
+            			<em>账户现金余额直接购买<i style="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余额不足，请重新选择支付方式或去充值</i> </em>
             		</div>
             		<div class="payWrap_item">
 	        			<em>您目前现金账号余额为：<i>0</i>元</em>
@@ -88,10 +88,9 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/md5.js" ></script>
@@ -227,12 +226,12 @@
 			}
 		})
 		//点击去支付
-		$("input[type='submit']").live("click",function(){
-			if(!$($("input[name='payWay']")[0]).attr("checked") && !$($("input[name='payWay']")[1]).attr("checked")){
+		$("input[type='submit']").on("click",function(){
+			if(!$($("input[name='payWay']")[0]).prop("checked") && !$($("input[name='payWay']")[1]).prop("checked")){
 				alerts("请选择支付方式");
 				return;
 			}
-			if($($("input[name='payWay']")[0]).attr("checked")){
+			if($($("input[name='payWay']")[0]).prop("checked")){
 				if(parseFloat(totalMoney) > parseFloat(usableBalance)){
 					return;	
 				}
@@ -258,7 +257,7 @@
 		function showShade(pageName,data,certBusCase){
 			$(".pop_up").removeClass("none");
 			//点击确认密码，跳转短信确认页面
-			$(".payWin_content .btn").live("click",function(){
+			$(".payWin_content .btn").on("click",function(){
 				var payPassw = $("input[name='payPassw']").val();
 				if(!payPassw){alerts("请输入交易密码");return;}
 				data.payPassword = hex_md5(payPassw);
@@ -289,23 +288,22 @@
 			});
 		}
 		//点击关闭
-		$(".payWin_content img").live("click",function(){
+		$(".payWin_content img").on("click",function(){
 			$(".pop_up").addClass("none");
 		})
 	})
 	//检测余额是否足够
 	function checkBanlance(el){
-		if($(el).attr("checked")){
-			if($(el).val() == "00"){
-				if(parseFloat(totalMoney) > parseFloat(usableBalance)){
-					$(".payWrap_radio em i").show();
-					$("input[name='payOrder']").attr("disabled","disabled");
-					$("input[name='payOrder']").css("background-color","#ccc");
-				}
-			}else{
-				$("input[name='payOrder']").attr("disabled","");
-				$("input[name='payOrder']").css("background-color","#FF5252")
+		if($(el).val() == "00"){
+			if(parseFloat(totalMoney) > parseFloat(usableBalance)){
+				$(".payWrap_radio em i").show();
+				$("input[name='payOrder']").attr("disabled","disabled");
+				$("input[name='payOrder']").css("background-color","#ccc");
 			}
+		}else{
+			$(".payWrap_radio em i").hide();
+			$("input[name='payOrder']").attr("disabled",false);
+			$("input[name='payOrder']").css("background-color","#FF5252")
 		}
 	}
 </script>

@@ -110,28 +110,44 @@
 			</p>
 		</div>
 	</body>
-	<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/layer/layer.js"></script>
 	<script type="text/javascript" src="js/motai.js"></script>
-	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 	<script type="text/javascript" src="js/common.js" ></script>
 	<script type="text/javascript" src="js/tools.js" ></script>
 	<script type="text/javascript">
-		$(".userInfo_submit").bind("click",function(){
+		$(".userInfo_submit").on("click",function(){
 			var ownName = $("input[name='owner']").val();
-			isEmpty(ownName,"请填写持卡人");
+			ownName = ownName.repalce(/\s+/g,"");
+			if(!ownName || ownName == ""){
+				alerts("请填写持卡人");
+				return;
+			}
 			var IDNum = $("input[name='IDCard']").val();
-			isEmpty(IDNum,"请填写身份证号");
+			if(!IDNum || IDNum == ""){
+				alerts("请填写身份证号");
+				return;
+			}
 			if(!testID(IDNum)) {
 				$("input[name='IDCard']").focus();
-				//alert("身份证号不正确");
 				alerts("身份证号不正确");
 				return;
 			}
 			var backName = $("select[name='bank']").val();
 			var cardNum = $("input[name='cardNum']").val();
-			isEmpty(cardNum,"请填写银行卡号");
+			if(!cardNum || cardNum == ""){
+				alerts("请填写银行卡号");
+				return;
+			}
+			if(!testBCard(cardNum)){
+				alerts("请输入正确的银行卡号");
+				return;
+			}
 			var telNum = $("input[name='telNum']").val(); 
+			if(!telNum || telNum == ""){
+				alerts("请输入手机号");
+				return;
+			}
 			if(!isPhoneNum(telNum)){
 				//alert("手机号输入错误，请重新输入");
 				alerts("手机号输入错误，请重新输入");
@@ -164,24 +180,6 @@
 		            }
 		        }
 			});
-//			Utils.ajax({
-//				url:"/restful/idencode/sendMsgCode",
-//				type:"POST",
-//				data:{"phoneNum":telNum},
-//				success: function (response, xml) {
-//	            	// 此处放成功后执行的代码
-//		            if(response.meta.success){
-//						location.href = "SMSconfirm.html";
-//		            }else{
-//						//会话过期，返回登录页面
-//						if(response.meta.message.indexOf("请您先登录")>-1){
-//							location.href = "timeOut.html";
-//							return;
-//						}
-//		            	alert(response.meta.message);
-//		            }
-//		        }
-//			});
 		})
 	</script>
 </html>

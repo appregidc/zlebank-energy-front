@@ -28,7 +28,7 @@
 		        			<img src="img/freeregisterxing.png" />
 		        			<span>登录密码 :</span>
 	        			</p>
-        				<input onblur="checkPas(this.value,this)" onkeyup="banInputSapce(event);checkPas(this.value,this)" type="password" name="password" placeholder="请输入登录密码" />
+        				<input onblur="testPas(this.value,this);checkPas(this.value,this);" onkeyup="checkPas(this.value,this)" type="password" maxlength="20" name="password" placeholder="请输入登录密码" />
         				<div class="password_intension">
         					<a class="password_show"></a>
 	        				<a class="password_show"></a>
@@ -43,7 +43,7 @@
 		        			<img src="img/freeregisterxing.png" />
 		        			<span>确认密码 :</span>
 	        			</p>
-	        			<input onkeyup="return banInputSapce(event);" onblur="checkPasCon(this.value,this)" type="password" name="passwordConfirm" placeholder="请再次输入登录密码" />
+	        			<input onblur="checkPasCon(this.value,this)" type="password" name="passwordConfirm" maxlength="20" placeholder="请再次输入登录密码" />
 	        		</div>
 	        		<div class="form_one">
 	        			<p class="form_title">
@@ -99,35 +99,13 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="js/tools.js"></script>
 <script type="text/ecmascript" src="js/md5.js"></script>
 <script type="text/javascript">
 	var isRegFlag = false;//未注册过
-	/** 
-	* 禁止空格输入 
-	* @param e 
-	* @returns {Boolean} 
-	*/ 
-	function banInputSapce(e){ 
-		var keynum; 
-		if(window.event) // IE 
-		{ 
-			keynum = e.keyCode ;
-		} 
-		else if(e.which) // Netscape/Firefox/Opera 
-		{ 
-			keynum = e.which ;
-		} 
-		if(keynum == 32){ 
-			alerts("不允许输入空格");
-			return false;
-		} 
-		return true; 
-	}
 //校验手机号是否注册过
 	function checkPhone(telNum,el){
 		if(!isPhoneNum(telNum)){
@@ -160,6 +138,7 @@
 	}
 //	检验确认密码
 	function checkPasCon(pass,el){
+		testPas(value,el);
 		if(pass != $("input[name='password']").val()){
 			$(el).val("");
 			alerts("两次密码不一样，请重新输入密码");
@@ -267,10 +246,12 @@
 	        }
 	    });
 	})
-	$(".checkBox").toggle(function(){
-		$(this).children("a").hide();
-	},function(){
-		$(this).children("a").show();
-	});
+	$(".checkBox").on("click",function(){
+		if($(this).children("a").css("display") == "none"){
+			$(this).children("a").fadeIn("fast");
+		}else{
+			$(this).children("a").fadeOut("fast");
+		}
+	})
 </script>
 </html>

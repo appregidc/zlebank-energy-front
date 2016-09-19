@@ -16,7 +16,7 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 	
 	
 	//点击消息类型(系统消息、业务消息)查询消息
-	$(".message_thead ul li a").live("click",function(e){
+	$(".message_thead ul li a").on("click",function(e){
 		    //切换消息类型前先将显示内容清空
 			var itag=$(this).children("i");
 			messageType=$(e.target).data("filter");
@@ -30,7 +30,7 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 	});
 
 	//删除消息
-	$(".delete").live("click",function(e){
+	$(".delete").on("click",function(e){
 		var messageIds=new Array();//声明一个存放id的数组 
 		$("input[name=id]").each(function (i,d){ 
 			if (d.checked) { 
@@ -47,7 +47,7 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 				// 此处放成功后执行的代码
 				if(response.meta.success){
 					var deleteCount=response.data;
-					alert("删除成功，共删除"+deleteCount+"条信息");
+					alerts("删除成功，共删除"+deleteCount+"条信息");
 					//删除成功刷新页面
 					window.location.reload();
 
@@ -57,7 +57,7 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 						location.href = "timeOut.html";
 						return;
 					}
-					alert(response.meta.message);
+					alerts(response.meta.message);
 				}
 			}
 		});
@@ -95,7 +95,7 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 							location.href = "timeOut.html";
 							return;
 						}
-						alert(response.meta.message);
+						alerts(response.meta.message);
 					}
 				}
 			});
@@ -122,14 +122,13 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 				// 此处放成功后执行的代码
 				if(response.meta.success){
 					var count=response.data;
-					//if("0"!=$.trim(count))
-
-					alert("消息标记已读成功");
-					window.location.reload();
-					
+					alerts("消息标记已读成功");
+					setTimeout(function(){
+						window.location.reload();
+					},3000);
 				}else{
 					//会话过期，返回登录页面
-					if(response.meta.message.indexOf("请您先登录")>-1){
+					if(response.meta.message.indexOf("登录")>-1){
 						location.href = "timeOut.html";
 						return;
 					}
@@ -150,10 +149,10 @@ var httpUrlUnreadCount = "/restful/message/unreadCount";
 			$(".least_choose").removeClass("none");
 		}
 	}
-	$(".closeImg").live("click",function(){
+	$(".closeImg").on("click",function(){
 		$(".pop_up").addClass("none");
 	})
-	$(".twoBtn a:last-child").live("click",function(){
+	$(".twoBtn a:last-child").on("click",function(){
 		$(".pop_up").addClass("none");
 		
 	})
@@ -220,7 +219,7 @@ function queryTotalNum(messageType){
 					location.href = "timeOut.html";
 					return;
 				}
-				alert(data.meta.message);
+				alerts(data.meta.message);
 			}
 		}
 	});
@@ -342,8 +341,7 @@ function getOnepageRC(messageType){
 									'<th>标题</th>'+
 									'<th>状态</th>'+
 									'<th>时间</th>'+
-								    '</tr>'
-
+								    '</tr>';
 							var messageType,title,content,createTime,isreadstatus;
 							for(var i = 0;i<mdata.length;i++){
 								messageType = mdata[i].messageType;
@@ -365,7 +363,7 @@ function getOnepageRC(messageType){
 										telp += '<tr class="">'+
 										"<td class='nobor'>"+"<input name='id'  type='checkbox' class='checkBox' value='"+id+"' />"+'</td>'+
 										'<td>'+messageType+'</td>'+
-										"<td style='text-decoration:underline;'onclick='messShow(this);'>"+title+'</td>'+
+										"<td style='text-decoration:underline;cursor:pointer;'onclick='messShow(this);'>"+title+'</td>'+
 										'<td>'+isreadstatus+'</td>'+
 										'<td>'+createTime+'</td>'+
 										'</tr>'+
@@ -377,7 +375,7 @@ function getOnepageRC(messageType){
 										telp += '<tr class="">'+
 										"<td class='nobor'>"+"<input name='id' type='checkbox' class='checkBox' value='"+id+"' />"+'</td>'+
 										'<td>'+messageType+'</td>'+
-										"<td style='text-decoration:underline;'onclick='messShow(this);'>"+title+'</td>'+
+										"<td style='text-decoration:underline;cursor:pointer;'onclick='messShow(this);'>"+title+'</td>'+
 										//'<td>'+isreadstatus+'</td>'+
 										"<td style='color:red;'>"+isreadstatus+'</td>'+
 										'<td>'+createTime+'</td>'+
@@ -409,7 +407,7 @@ function getOnepageRC(messageType){
 					location.href = "timeOut.html";
 					return;
 				}
-				alert(data.meta.message);
+				alerts(data.meta.message);
 			}
 		}
 	});
@@ -443,24 +441,19 @@ function queryUnreadCount(messageType,itag){
 	});
 
 //全选全不选
-	$("#inputids").live("click",function(e){
+	$("#inputids").on("click",function(e){
 		if($(this).attr("checked")){
-			
 			$("[name = id]:checkbox").attr("checked", true);
 		}else{
 			$("[name = id]:checkbox").attr("checked", false);
 		}
 	});
 //某一个没有选中取消全选
-$("[name = id]:checkbox").live("click",function(e){
+$("[name = id]:checkbox").on("click",function(e){
 	if($("[name = id]:checkbox").length == ($("[name = id]:checked").length )){
 		$("#inputids").attr("checked",true);
 	}else{
 		$("#inputids").attr("checked",false);
 	}
-
-
-		
    });
-
 }

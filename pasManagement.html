@@ -57,15 +57,15 @@
 	        			<p><i></i>您好，为了保障您的资金安全，请设置交易密码</p>
 	        			<div class="none">
 		        			<a>原交易密码：</a>
-	        				<input type="password" name="oldPassw" />
+	        				<input type="password" maxlength="20" name="oldPassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div>
 		        			<a>新交易密码：</a>
-	        				<input type="password" name="newPassw"/>
+	        				<input type="password" maxlength="20" name="newPassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div>
 		        			<a>确认交易密码：</a>
-	        				<input type="password" name="confimPassw"/>
+	        				<input type="password" maxlength="20" name="confimPassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div class="btn">确认</div>
 	        		</div>
@@ -73,15 +73,15 @@
 	        			<p>修改交易密码</p>
 	        			<div>
 		        			<a>原交易密码：</a>
-	        				<input type="password" name="oldRevisePassw" />
+	        				<input type="password" maxlength="20" name="oldRevisePassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div>
 		        			<a>新交易密码：</a>
-	        				<input type="password" name="newRevisePassw"/>
+	        				<input type="password" maxlength="20" name="newRevisePassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div>
 		        			<a>确认交易密码：</a>
-	        				<input type="password" name="confimRevisePassw"/>
+	        				<input type="password" maxlength="20" name="confimRevisePassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div class="btn">确认</div>
 	        		</div>
@@ -89,15 +89,15 @@
 	        			<p>登录密码</p>
 	        			<div>
 		        			<a>原登录密码：</a>
-	        				<input type="password" name="oldloginPassw" />
+	        				<input type="password" maxlength="20" name="oldloginPassw" onblur="testPas(this.value,this)" />
 	        			</div>
 	        			<div>
 		        			<a>新登录密码：</a>
-	        				<input type="password" name="newloginPassw"/>
+	        				<input type="password" maxlength="20" name="newloginPassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div>
 		        			<a>确认登录密码：</a>
-	        				<input type="password" name="confimloginPassw"/>
+	        				<input type="password" maxlength="20" name="confimloginPassw" onblur="testPas(this.value,this)"/>
 	        			</div>
 	        			<div class="btn">确认</div>
 	        		</div>
@@ -122,10 +122,9 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/md5.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/tools.js"></script><!--自定义封装函数-->
@@ -139,11 +138,18 @@
 			localStorage.setItem("pageName","修改登录密码");
 			$(".baseInfo_title").html("修改登录密码");
 			$(".pasMan .pasMan_form:last-child").removeClass("none");
-			$(".pasMan_form .btn").live("click",function(){
+			$(".pasMan_form .btn").on("click",function(){
 				var oldPassw = $("input[name='oldloginPassw']").val();
 				if(!oldPassw){alerts("请填写原密码");return;}
 				var newPassw = $("input[name='newloginPassw']").val();
 				if(!newPassw){alerts("请填写新密码");return;}
+				if(oldPassw == newPassw){
+					alerts("新密码与旧密码一样");
+					return;
+				}
+				if(newPassw.length < 6){
+					alerts("请设置6位以上的密码");
+				}
 				var confimPassw = $("input[name='confimloginPassw']").val();
 				if(!confimPassw){alerts("请填写确认密码");return;}
 				if(newPassw != confimPassw){alerts("两次密码填写不一样");return;}
@@ -180,7 +186,7 @@
 					$(".pasMan_form p i").html(userName+",");
 				}
 			});
-			$(".pasMan_form div:last-child").live("click",function(){
+			$(".pasMan_form div:last-child").on("click",function(){
 				var newPassw = $("input[name='newPassw']").val();
 				var confimPassw = $("input[name='confimPassw']").val();
 				if(!newPassw){alerts("请输入密码");return;}
@@ -210,7 +216,7 @@
 			localStorage.setItem("pageName","修改交易密码");
 			$(".baseInfo_title").html("修改交易密码");
 			$(".pasMan .revisePassw").removeClass("none");
-			$(".revisePassw .btn").live("click",function(){
+			$(".revisePassw .btn").on("click",function(){
 				var oldPassw = $("input[name='oldRevisePassw']").val();
 				var newPassw = $("input[name='newRevisePassw']").val();
 				var confimPassw = $("input[name='confimRevisePassw']").val();

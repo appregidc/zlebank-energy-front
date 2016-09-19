@@ -68,19 +68,19 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<!--<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->-->
 <script type="text/javascript" src="js/tools.js"></script><!--自定义封装函数-->
 <script type="text/javascript" src="js/md5.js"></script>
 <script type="text/javascript">
 //切换图片验证码  @param  el是当前点击元素
 	var src = $(".form img").attr("src");
-//	localStorage.clear();
-//	sessionStorage.clear();
 	//检测手机号
 	function checkPhone(telNum,el){
+		if(telNum==""){
+			return;
+		}
 		if(!isPhoneNum(telNum)){
 			$(el).val("");
 			alerts("手机号不正确，请重新输入");
@@ -92,7 +92,7 @@
 		var num = "?"+Math.random();
 		$(el).attr("src",src + num);
 	}
-	$(".login_btn").bind("click",function(){
+	$(".login_btn").on("click",function(){
 		var telNum = $("input[name='telephone']").val();
 		telNum = telNum.replace(/\s+/g,"");
 		if(!telNum){
@@ -139,7 +139,7 @@
 		            	},1000);
 	            	}
 	            }else{
-	            	alert(response.meta.message);
+	            	alerts(response.meta.message);
 	            	changeImg($("#codeImg"));
 	            	$("input[name='code']").val("");
 	            	if(response.meta.message.indexOf("请先去注册")>-1){

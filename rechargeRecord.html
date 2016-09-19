@@ -134,9 +134,24 @@
 			</div>
 	    </div>
 	</div>
-<script type="text/javascript" src="js/footer.js" ></script>
+	<script type="text/javascript" src="js/footer.js" ></script>
+	<!--提示框-->
+	<div class="alert_box">
+		<div class="alert_cont"></div>
+		<label class="alert_btn">确定</label>
+	</div>
+	<!--有功能按钮-->
+	<div class="motai_box">
+		<div class="motai_cont"></div>
+		<p class="motai_p">
+			<label class="motai_btn motai_cancel">取消</label>
+			<label class="motai_btn motai_sure">确定</label>
+		</p>
+	</div>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
+<script type="text/javascript" src="js/layer/layer.js" ></script>
+<script type="text/javascript" src="js/motai.js" ></script>
 <script type="text/javascript" src="js/tools.js"></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/laydate.js"></script>
@@ -145,7 +160,6 @@
 	//请求地址 httpUrlCount：查询总条数，httpUrlQuery：查询对应条件的数据
 	var httpUrlCount = "/restful/rchgorder/count";
 	var httpUrlQuery = "/restful/rchgorder/query";
-	var recentTime,nowTime,status="";
 	var url = location.href;
 	var orderId;
 	if(url.indexOf("?")>-1){

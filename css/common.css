@@ -120,7 +120,7 @@ filter:alpha(opacity=50);
 .ico a{width:10px;height:10px;border-radius:50%; display:inline-block;background:#fff; margin:0 8px;}
 .ico .active{background: #f55c10;}
 /*模态窗口样式*/
-.alert_box,.motai_box{color: #666;display: none;font-size: 16px;line-height: 25px;text-align: center;padding-top:20px;}
+.alert_box,.motai_box{color: #666;display: none;font-size: 16px;line-height: 25px;text-align: center;padding-top:20px;position: relative;height: 100%;}
 .motai_btn,.alert_btn{cursor: pointer;color: #fff;font-weight:100;background: #FF5252;border-radius: 4px;height: 30px;line-height: 30px;width: 80px; display: inline-block;text-align: center;}
 .alert_box .alert_btn{position: fixed;bottom: 30px;right: 20px;}
 .motai_box .motai_p{position: fixed;right: 110px;bottom: 30px;}

@@ -28,7 +28,7 @@
 		    				<span><i id="unitPrice">1000.00</i>元/份</span>
 		    			</div>
 		    			<div class="product_detail">
-		    				<span>锁定期限</span>
+		    				<span>产品期限</span>
 		    				<span><i id="lockDate">360</i>天</span>
 		    			</div>
 		    		</div>
@@ -77,7 +77,7 @@
 	    		<dl class="amount_wrap clearfix">
 	    			<a class="fl">购买数量：</a>
 	    			<a href="javascript:;" class="num_decrease">- </a>
-	    			<input onchange="buyNum(this.value);" type="text" value="0" placeholder="0" name="number"/>
+	    			<input onkeyup="checkNum(event);" onchange="buyNum(this.value);" type="text" value="0" placeholder="0" name="number"/>
 	    			<a href="javascript:;" class="num_increase">+</a>
 	    			<em>（限购<i id="maxInvest">0</i>份，库存<i id="suiplus">0</i>份）</em>
 	    		</dl>
@@ -147,8 +147,8 @@
 	    		<h4>六、 卖单转让</h4>
 	    		<p>受让人可将受让的份额再次进行转让。</p>
 	    		<h4>4.信息公告</h4>
-	    		<a href="">XXXXXXXXXXXXXXXXXXXXXX合同.pdf</a><br />
-	    		<a href="">XXXXXXXXXXXXXXXXXXX公告.pdf</a>
+	    		<a href="">证联金融合同.pdf</a><br />
+	    		<a href="">证联金融公告.pdf</a>
 	    	</div>
     	</div>
 	</div>
@@ -168,10 +168,9 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/login.js" ></script>
 <script type="text/javascript">
@@ -179,7 +178,7 @@
 	var orderInfo = {};
 	var productId = location.href.substr(location.href.indexOf("=")+1);
 	var maxNum = 0;
-	var nowDate,startTime,day,hours,minute,secs;//时分秒
+	var nowDate,startTime,endTime,day,hours,minute,secs;//时分秒
 	var unitCost,expectEarnRate;//单价，预计收益
 	var repayMode,investPeriodDay,investPeriodMonth,yearRate,financeScale;
 	$(function(){
@@ -217,7 +216,7 @@
 						$("#startDate").text(splitStr(startDate));
 						$("#endDate").text(splitStr(endDate));
 						$("#collectStart").text((strFormat(data.collectStartDt)));
-						$("#collectEnd").text((strFormat(data.collectEndDt)));
+						$("#collectEnd").text(collectEnd);
 						startDate = new Date(startDate).getTime();
 						var nowTime = new Date().getTime();
 						endDate = new Date(endDate).getTime();
@@ -237,9 +236,9 @@
 							$("#round4").css("background","#43acfc");
 							$("#line2").css("background","#43acfc");
 						}
-//						data.collectStartTime = "2016-9-9 15:20:00"
 						startTime = new Date(data.collectStartTime);
-						changeState(data.productStatus,startTime);
+						endTime = new Date(collectEnd);
+						changeState(data.productStatus,startTime,endTime);
 					}else{
 						alerts("暂无数据");
 					}
@@ -253,7 +252,7 @@
 				}
 			}
 		});
-		$(".num_decrease").live("click",function(){
+		$(".num_decrease").on("click",function(){
 			num = parseInt($("input[name='number']").val());
 			num--;
 			if(num < 0){
@@ -262,7 +261,7 @@
 			buyNum(num);
 			$("input[name='number']").val(num);
 		});
-		$(".num_increase").live("click",function(){
+		$(".num_increase").on("click",function(){
 			num = parseInt($("input[name='number']").val());
 			num++;
 			if(num > financeScale){alerts("超出库存");return;}
@@ -271,40 +270,48 @@
 			$("input[name='number']").val(num);
 		});
 	});
+	//监测输入的值为数字
+	function checkNum(e){
+		if(e.keyCode < 48 || e.keyCode > 57){
+			alerts("只能输入数字");
+			$(this).val("");
+			return;
+		}
+	}
 	//产品状态
-	function changeState(productStatus,startTime){
+	function changeState(productStatus,startTime,endTime){
 		switch (productStatus){
 			case "03":
 				$(".buy_btn").css("background","#FF5252");
-				$(".buy_btn").attr("disabled","");
+				$(".buy_btn").attr("disabled",false);
 				$(".buy_btn").val("立即购买");
-				showTime(startTime);
+				showTime(startTime,endTime);
 				setInterval(function(){
-					showTime(startTime);
+					showTime(startTime,endTime);
 				},1000);
 				break;
 			case "04":
 				$(".buy_btn").css("background","#ccc");
-				$(".buy_btn").attr({"disabled":"disabled","href":""});
+				$(".buy_btn").attr("disabled","disabled");
 				$(".buy_btn").val("已售罄");
 				break;
 			case "05":
 				$(".buy_btn").css("background","#ccc");
-				$(".buy_btn").attr({"disabled":"disabled","href":""});
+				$(".buy_btn").attr("disabled","disabled");
 				$(".buy_btn").val("还款中");
 				break;
 			case "09":
 				$(".buy_btn").css("background","#ccc");
-				$(".buy_btn").attr({"disabled":"disabled","href":""});
+				$(".buy_btn").attr("disabled","disabled");
 				$(".buy_btn").val("已售罄");
 				break;
 			default:
 				$(".buy_btn").css("background","#FF5252");
-				$(".buy_btn").attr("disabled","");
+				$(".buy_btn").attr("disabled",false);
 				$(".buy_btn").val("立即购买");
-				showTime(startTime);
+				showTime(startTime,endTime);
 				setInterval(function(){
-					showTime(startTime);
+					showTime(startTime,endTime);
 				},1000);
 				break;
 		}
@@ -337,8 +344,15 @@
 			}
 		});
 	}
-	function showTime(startTime){
+	function showTime(startTime,endTime){
 		nowDate = new Date();
+		//募集结束 结束购买
+		if(endTime.getTime() < nowDate.getTime()){
+			$(".buy_btn").val('募集结束');
+			$(".buy_btn").css("background","#ccc");
+			return;
+		}
+		//募集开始购买
 		if(startTime.getTime() > nowDate.getTime()){
 			//转换为天数
 			day = parseInt((startTime.getTime() - nowDate.getTime())/1000/60/60/24);
@@ -362,42 +376,31 @@
 			}
 		}else{
 			$(".buy_btn").val('立即购买');
-			$(".buy_btn").css("background","#FF5252")
+			$(".buy_btn").css("background","#FF5252");
 		}
 	}
 //	点击购买
-	$(".buy_btn").live("click",function(e){
+	$(".buy_btn").on("click",function(e){
 		if($(e.target).val().indexOf("立即购买")<=-1){
-//			alert("活动未开始");
 			return;
 		}
 		if(!nickName && !userName){
-//			alert("请您先登录再购买");
-//			location.href = "login.html";
 			motai("请您先登录再购买","login.html");
 			return;
 		}
 		if(!custId){
-//			alert("登录超时，请重新登录");
-//			location.href = "login.html";
 			motai("登录超时，请重新登录","login.html");
 			return;
 		}
 		if(isPassIdentify == "0"){
-//			alert("请先去实名认证");
-//			location.href = "realName_identify.html";
 			motai("请先去实名认证","realName_identify.html");
 			return;
 		}
 		if(isBindCard == "0"){
-//			alert("请先去绑卡");
-//			location.href = "bind_BankCard.html";
 			motai("请先去绑卡","bind_BankCard.html");
 			return;
 		}
 		if(isSetTradePwd == "0"){
-//			alert("请先去设置交易密码");
-//			location.href = "pasManagement.html?pageName=setTradePas";
 			motai("请先去设置交易密码","pasManagement.html?pageName=setTradePas");
 			return;
 		}
@@ -434,34 +437,5 @@
 			}
 		});
 	})	
-	//输入金额，收益跟随变化
-//	function getMoney(mon,el,e){
-//		if(!isNumber(e.keyCode)){
-//			alert("请输入数字");
-//			$(el).val("");
-//			return;
-//		}
-//		Utils.ajax({
-//			url:"/restful/calculator/expben",
-//			type:"post",
-//			data:{"investAmt":mon,"repayMode":repayMode,"investPeriodDay":investPeriodDay,"investPeriodMonth":investPeriodMonth,"yearRate":yearRate,"yearDay":"360"},
-//			success:function(data,xml){
-//				if(data.meta.success){
-//					if(data.data){
-//						$("#dayProfit").html(data.data.total_lixi);
-//					}else{
-//						
-//					}
-//				}else{
-//					//会话过期，返回登录页面
-//					if(data.meta.message.indexOf("登录")>-1){
-//						location.href = "timeOut.html";
-//						return;
-//					}
-//					alert(data.meta.message);
-//				}
-//			}
-//		});
-//	}
 </script>
 </html>

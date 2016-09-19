@@ -141,7 +141,7 @@ input[type="checkbox"]{margin: 0;padding: 0;}
 /*消息中心start*/
 .message_form{padding: 27px 18px 40px 21px;}
 .message_form .message_thead{background: #6accff;color: #fff;}
-.message_form .message_thead ul{padding: 7px 0 6px 0;}
+.message_form .message_thead ul{padding: 2px 0;}
 .message_form .message_thead ul li{border: solid #E9E9E9;border-width: 0 1px 0 0;line-height: 43px;height: 43px;display: inline-block;text-align: center;width: 116px;}
 .message_form .message_thead ul li a{color: #fff;}
 .message_form .message_thead ul li:nth-child(4){width: 340px;text-align: right;}

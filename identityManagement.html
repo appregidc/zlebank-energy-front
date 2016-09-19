@@ -120,24 +120,20 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/doT.min.js" ></script>
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript">
-//	localStorage.setItem("pageName","修改登录密码");
 	//去实名认证
-	$("#gotoIndenty").live("click",function(){
-//		localStorage.setItem("pageName","去认证");
+	$("#gotoIndenty").on("click",function(){
 		setTimeout(function(){
 			location.href = "realName_identify.html";
 		},1000);
 	});
-	$("#gotoBind").live("click",function(){
-//		localStorage.setItem("pageName","去绑定");
+	$("#gotoBind").on("click",function(){
 		setTimeout(function(){
 			location.href = "bind_BankCard.html";
 		},1000);
@@ -152,7 +148,7 @@
             if(response.meta.success){
             	if(response.data){
             		var telNo = response.data.userName;
-            		telNo = telNo.replace(telNo.substr(3,telNo.length-6),"***");
+            		telNo = telNo.replace(telNo.substr(3,telNo.length-6),"*****");
             		response.data["userName"] = telNo;
 			    	var innerText = doT.template($("#userInfoTem").text());
 			    	$(".baseInfo_rg").html(innerText(response.data));

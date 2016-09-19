@@ -13,8 +13,8 @@
 		<div class="w1000 clearfix ">
 			<div class="rechange_bbor">
 				<div class="rechange_sum">
-					<a>充值金额</a>
-					<input type="text" name="money" placeholder="0" onpaste="return false;" onkeyup="getValue();" onchange="getValue();"/>
+					<a>充值金额(元)</a>
+					<input type="text" name="money" placeholder="0" onpaste="return false;" onchange="getValue(this);"/>  <!--onkeyup="getValue();"-->
 					<a>(当前可用金额<i>0</i>元  充值后余额<i>0</i>元)</a>
 				</div>
 			</div>
@@ -78,10 +78,9 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/doT.min.js" ></script>
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
@@ -139,11 +138,17 @@
 			}
 		})
 	})
-	function getValue(){
-		var amount = $("input[name='money']").val();
-		var reg = /^([0-9.]+)$/;
-		if(!reg.test(amount)){alerts("只能输入数字");return;}
-		$(".rechange_sum i:first-child").text(amount);
+	function getValue(el){
+		var amount = $(el).val();
+		if(!amount){
+			amount=0;
+			$(".rechange_sum i:first-child").text(parseFloat(amount));
+			$(".rechange_sum i:last-child").html(parseFloat(amount)+parseFloat(balance));
+			return;
+		}
+		var reg = /^((\d*)|([0-9]*[.]{1}[0-9]{1,2}))$/;
+		if(!reg.test(amount)){alerts("金额为整数或最多保留到分的金额");$(el).val("");amount=0;return;}
+		$(".rechange_sum i:first-child").text(parseFloat(amount));
 		$(".rechange_sum i:last-child").html(parseFloat(amount)+parseFloat(balance));
 	}
 	$(".rechange_confim").bind("click",function(){
@@ -159,7 +164,7 @@
 				break;
 		}
 	})
-	$(".payWin_content img").live("click",function(){
+	$(".payWin_content img").on("click",function(){
 		$(".pop_up").addClass("none");
 	})
 	//使用线下转账
@@ -169,7 +174,7 @@
 	//使用银行快捷支付
 	function useCard(amount){
 		$(".payWin").removeClass("none");
-		$(".payWin_content .btn").live("click",function(){
+		$(".payWin_content .btn").on("click",function(){
 			var payPassw = $("input[name='payPassw']").val();
 			if(!payPassw){alerts("请输入交易密码");return;}
 			var data = {

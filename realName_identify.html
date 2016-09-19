@@ -55,15 +55,15 @@
 	        		<div class="baseInfo_form realName_auth">
 	        			<div class="baseInfo_userName">
 	        				<a>持卡人：</a>
-	        				<input type="text" name="owner" />
+	        				<input type="text" name="owner" placeholder="真实姓名" onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5]/g,''))"/>
 	        			</div>
 	        			<div class="baseInfo_userName">
 	        				<a>昵称：</a>
-	        				<input type="text" name="nickName" />
+	        				<input type="text" name="nickName" placeholder="昵称"/>
 	        			</div>
 	    				<div class="baseInfo_userName">
 							<a>身份证：</a>
-							<input type="text" name="IDCard" />
+							<input type="text" name="IDCard" placeholder="身份证号" onblur="checkID(this.value,this);" maxlength="18"/>
 						</div>
 						<div class="baseInfo_userName">
 	        				<a>银行：</a>
@@ -77,11 +77,11 @@
 	        			</div>
 	        			<div class="baseInfo_userName">
 	        				<a>卡号：</a>
-	        				<input type="text" name="cardNum" />
+	        				<input type="text" name="cardNum" placeholder="银行卡号" onblur="checkNOID(this.value,this);" maxlength="19"/>
 	        			</div>
 						<div class="baseInfo_userName">
 	        				<a>银行预留手机号：</a>
-	        				<input type="text" name="telNum" maxlength="11"/>
+	        				<input type="text" name="telNum" maxlength="11" placeholder="手机号"/>
 	        			</div>
 	        			<div class="userInfo_submit btn">提交</div>
 	        		</div>
@@ -102,27 +102,41 @@
 	    </div>
 	    <!--内容区域end-->
 	    <script type="text/javascript" src="js/footer.js" ></script>
-	<!--提示框-->
-	<div class="alert_box">
-		<div class="alert_cont"></div>
-		<label class="alert_btn">确定</label>
-	</div>
-	<!--有功能按钮-->
-	<div class="motai_box">
-		<div class="motai_cont"></div>
-		<p class="motai_p">
-			<label class="motai_btn motai_cancel">取消</label>
-			<label class="motai_btn motai_sure">确定</label>
-		</p>
-	</div>
-</body>
-	<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+		<!--提示框-->
+		<div class="alert_box">
+			<div class="alert_cont"></div>
+			<label class="alert_btn">确定</label>
+		</div>
+		<!--有功能按钮-->
+		<div class="motai_box">
+			<div class="motai_cont"></div>
+			<p class="motai_p">
+				<label class="motai_btn motai_cancel">取消</label>
+				<label class="motai_btn motai_sure">确定</label>
+			</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 	<script type="text/javascript" src="js/layer/layer.js"></script>
 	<script type="text/javascript" src="js/motai.js"></script>
-	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 	<script type="text/javascript" src="js/common.js" ></script>
 	<script type="text/javascript" src="js/tools.js" ></script>
 	<script type="text/javascript">
+	//身份证号
+		function checkID(value,el){
+			if(!testID(value)){
+				alerts("身份证号输入不正确，请重新输入");
+				$(el).val("");
+				return;
+			}
+		}
+		function checkNOID(value,el){
+			if(!testBCard(value)){
+				alerts("银行卡号输入不正确，请重新输入");
+				$(el).val("");
+				return;
+			}
+		}
 		$(".userInfo_submit").bind("click",function(){
 			var ownName = $("input[name='owner']").val();
 			ownName = ownName.replace(/\s+/g,"");

@@ -16,7 +16,7 @@ $(function(){
 						isSetTradePwd = data.data.isSetTradePwd;
 						var str = '<a>您好，'+(nickName&&nickName!="null"&&nickName!=""?nickName:userName)+'</a>|'+
 					        	'<a href="myAsset.html">会员中心</a>|'+
-					        	'<a href="javascript:;">退出登录</a>|'+
+					        	'<a href="javascript:;" onclick="exit();">退出登录</a>|'+
 					            '<a href="newBie.html">新手指南</a>|'+
 					        	'<a href="comProblem.html">常见问题</a>'
 						$(".top p").html(str);
@@ -35,27 +35,30 @@ $(function(){
 						}
 						alert(data.meta.message);
 					}
-					localStorage.setItem('user_name',userName);
 				}
 			})
 		}
-		$(".top a[href='javascript:;']").live("click",function(){
-		//		退出登录
-			Utils.ajax({
-		        url: "/restful/user/logout",              //请求地址
-		        type: "POST",                       			   //请求方式
-		        data: {"custId":custId,"mobile":userName},         				   //请求参数
-		        success: function (response, xml) {
-		            // 此处放成功后执行的代码
-		            if(response.meta.success){
-		            	alert("退出成功");
-	            		localStorage.clear();
-	            		sessionStorage.clear();
-						location.href = "login.html";
-		            }else{
-		            	alert(response.meta.message);
-		            }
-		        }
-		    });
-		})
 })
+function exit(){
+//		退出登录
+	Utils.ajax({
+        url: "/restful/user/logout",              //请求地址
+        type: "POST",                       			   //请求方式
+        data: {"custId":custId,"mobile":userName},         				   //请求参数
+        success: function (response, xml) {
+            // 此处放成功后执行的代码
+            if(response.meta.success){
+            	alert("退出成功");
+        		localStorage.clear();
+        		sessionStorage.clear();
+				location.href = "login.html";
+            }else{
+            	if(response.meta.message.indexOf("登录")>-1){
+            		location.href = "timeOut.html";
+            		return;
+            	}
+            	alert(response.meta.message);
+            }
+        }
+    });
+}

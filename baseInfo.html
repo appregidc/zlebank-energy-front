@@ -89,8 +89,23 @@
 	    	</div>
 		</div>
 		<script type="text/javascript" src="js/footer.js" ></script>
+		<!--提示框-->
+		<div class="alert_box">
+			<div class="alert_cont"></div>
+			<label class="alert_btn">确定</label>
+		</div>
+		<!--有功能按钮-->
+		<div class="motai_box">
+			<div class="motai_cont"></div>
+			<p class="motai_p">
+				<label class="motai_btn motai_cancel">取消</label>
+				<label class="motai_btn motai_sure">确定</label>
+			</p>
+		</div>
 	</body>
-	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+	<script src="js/jquery.min.js"></script><!--jQuery 库-->
+	<script type="text/javascript" src="js/layer/layer.js" ></script>
+	<script type="text/javascript" src="js/motai.js" ></script>
 	<script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/common.js" ></script>
 	<script type="text/javascript">
@@ -115,16 +130,20 @@
 							location.href = "timeOut.html";
 							return;
 						}
-						alert(data.meta.message);
+						alerts(data.meta.message);
 					}
 				}
 			});
 			//点击确认修改
-			$(".userInfo_submit").live("click",function(){
+			$(".userInfo_submit").on("click",function(){
 				var sex = $("input[type='radio']:checked").val();
 				var investmentExp = $("input[name='investmentExp']").val();
 				var address = $("input[name='address']").val();
 				var job = $("input[name='job']").val();
+				if(!sex && !investmentExp && !address && !job){
+					alerts("未修改任何信息");
+					return;
+				}
 				Utils.ajax({
 					url:"/restful/custinfo/baseinfo/update",
 					type:"post",
@@ -132,9 +151,9 @@
 					success:function(data,xml){
 						if(data.meta.success){
 							if(data.data){
-								alert("修改成功");
+								alerts("修改成功");
 							}else{
-								alert("修改失败");
+								alerts("修改失败");
 							}
 						}else{
 							//会话过期，返回登录页面
@@ -142,7 +161,7 @@
 								location.href = "timeOut.html";
 								return;
 							}
-							alert(data.meta.message);
+							alerts(data.meta.message);
 						}
 					}
 				});

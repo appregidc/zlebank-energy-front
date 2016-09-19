@@ -68,15 +68,15 @@
     </div>
 	<script type="text/javascript" src="js/footer.js" ></script>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/login.js" ></script>
 <script type="text/javascript">
-	$(".aboutUs_cont ul li").live("click",function(){
+	$(".aboutUs_cont ul li").on("click",function(){
 		$(".aboutUs_cont ul li").removeClass("aboutAct");
 		$(this).addClass("aboutAct");
 	})
-	$(".commenPro").live("click",function(){
+	$(".commenPro").on("click",function(){
 		if($(this).next().hasClass("none")){
 			$(this).next().removeClass("none");
 			$(this).find("i").css("transform","rotate(180deg)");

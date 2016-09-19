@@ -145,7 +145,7 @@
 	</div>
 <script type="text/javascript" src="js/footer.js" ></script>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/laydate.js"></script>
@@ -154,7 +154,6 @@
 	//请求地址 httpUrlCount：查询总条数，httpUrlQuery：查询对应条件的数据
 	var httpUrlCount = "/restful/wthdrorder/count";
 	var httpUrlQuery = "/restful/wthdrorder/query";
-	var recentTime,nowTime,status="";
 	var orderId = "";
 	queryTotalNum();
 	//得到数据后渲染页面

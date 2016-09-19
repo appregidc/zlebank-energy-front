@@ -211,20 +211,6 @@
 					                        </tr>
 				                      {{?}}
 			                        </script>
-			                        <!--<tr>
-			                            <td>产品编号002</td>
-			                            <td>10000</td>
-			                            <td>1000000</td>
-			                            <td>2016-04-01</td>
-			                            <td>到期反本息</td>
-			                        </tr>
-			                        <tr>
-			                            <td>产品编号003</td>
-			                            <td>10000</td>
-			                            <td>1000000</td>
-			                            <td>2016-04-01</td>
-			                            <td>到期反本息</td>
-			                        </tr>-->
 			                    </tbody>
 			                </table>
 			            </div>
@@ -233,54 +219,6 @@
 			        <div class="mem_wrap mt20 clearfix">
 			            <h1>为您推荐</h1>
 			            <div class="border_box clearfix" id="product">
-			                <!--<div class="fl div_box3">
-			                    <h2>产品007</h2>
-			                    <div class="clearfix">
-			                        <div class="fl">
-			                            <p class="col2">7.5%</p>
-			                            <p>年华收益</p>
-			                        </div>
-			                        <div class="fr">
-			                            <p class="col2">180元</p>
-			                            <p>锁定期限</p>
-			                        </div>
-			                    </div>
-			                    <p>产品单价：2000.00元</p>
-			                    <p>剩余块数：240块</p>
-			                    <a class="btnone" href="">查看详情</a>
-			                </div>-->
-			                <!--<div class="fl div_box3">
-			                    <h2>产品008</h2>
-			                    <div class="clearfix">
-			                        <div class="fl">
-			                            <p class="col2">7.5%</p>
-			                            <p>年华收益</p>
-			                        </div>
-			                        <div class="fr">
-			                            <p class="col2">180元</p>
-			                            <p>锁定期限</p>
-			                        </div>
-			                    </div>
-			                    <p>产品单价：2000.00元</p>
-			                    <p>剩余块数：240块</p>
-			                    <a class="btnone" href="">查看详情</a>
-			                </div>-->
-			                <!--<div class="fl div_box3 nobor">
-			                    <h2>产品009</h2>
-			                    <div class="clearfix">
-			                        <div class="fl">
-			                            <p class="col2">7.5%</p>
-			                            <p>年华收益</p>
-			                        </div>
-			                        <div class="fr">
-			                            <p class="col2">180元</p>
-			                            <p>锁定期限</p>
-			                        </div>
-			                    </div>
-			                    <p>产品单价：2000.00元</p>
-			                    <p>剩余块数：240块</p>
-			                    <a class="btnone" href="">查看详情</a>
-			                </div>-->
 			            </div>
 			        </div>
 			    </div>
@@ -303,10 +241,9 @@
 		</p>
 	</div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/motai.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
 <script type="text/javascript" src="js/tools.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
 <script type="text/javascript" src="js/doT.min.js" ></script>
@@ -328,7 +265,7 @@
 	            		response.data["lastLoginTime"] = lastLoginTime;
 				    	var innerText = doT.template($("#userInfoTem").text());
 				    	$("#userInfo").html(innerText(response.data));
-				    	$(".clearfix .top-up,.withdraw").live("click",function(e){
+				    	$(".clearfix .top-up,.withdraw").on("click",function(e){
 							if(response.data.isPassIdentify == "0"){
 								if(confirm("先去实名认证")){
 									location.href = "realName_identify.html";

@@ -8,7 +8,7 @@ function alerts(cot){
 		  id:'a',
 		  tipsMore:true,
 		  title:  ['提示', 'border-bottom: 1px solid #ddd;font-size: 16px;color: #666;'],
-		  area: ['400px', '230px'], //宽高
+		  area: ['346px', '188px'], //宽高
 		  content: $(".alert_box")
 	  });
 	  $(".alert_btn").click(function(){layer.closeAll();});

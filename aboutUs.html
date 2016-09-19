@@ -43,7 +43,7 @@
     </div>
     <script type="text/javascript" src="js/footer.js" ></script>
 </body>
-<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script><!--jQuery 库-->
+<script src="js/jquery.min.js"></script><!--jQuery 库-->
 <script src="js/tools.js"></script>
 <script type="text/javascript" src="js/login.js" ></script>
 <script type="text/javascript">
@@ -51,7 +51,7 @@
 		$(".menu_list ul li").removeClass("acti");
 		$(".menu_list ul li:last-child").addClass("acti");
 	});
-	$(".aboutUs_cont ul li").live("click",function(){
+	$(".aboutUs_cont ul li").on("click",function(){
 		$(".aboutUs_cont ul li").removeClass("aboutAct");
 		$(this).addClass("aboutAct");
 	})

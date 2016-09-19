@@ -10,7 +10,7 @@ Utils.ajax = function(options) {
     options.type = (options.type || "GET").toUpperCase();
     options.dataType = options.dataType || "json";
     options.fail = function (){
-    	alert("请求失败,请重试");// 此处放失败后执行的代码
+    	alerts("请求失败,请重试");// 此处放失败后执行的代码
     }
     var params = options.data?JSON.stringify(options.data):Math.random();
 
@@ -64,18 +64,17 @@ function formatParams(data) {
  * isMob(num);//false 否
  * 
  */
-var isMob = /^((\+?86)|(\(\+86\)))?(13[0-9][0-9]{8}|17[0-9]{9}|15[0-9][0-9]{8}|18[0-9]{9}|14[0-9]{9})$/;
+var isMob = /^(13[0-9]{9}|17[0-9]{9}|15[0-9]{9}|18[0-9]{9}|14[0-9]{9})$/;
 function isPhoneNum(num){
 	if(!num) return;
-	var value = num.trim();
-	if(isMob.test(value)){
+	if(isMob.test(num)){
 		return true;
 	}else{
 		return false;
 	}
 }
 //金额（小数 ）
-var isMon = /^\d*?\.?\d*?$/;
+var isMon = /^((\d*)|([0-9]*[.]{1}[0-9]{1,2}))$/;
 function isMoney(mon){
 	if(!mon) return;
 	if(isMon.test(mon)){
@@ -87,13 +86,28 @@ function isMoney(mon){
 /*
  * 验证身份证号
  * @Param IDcard：身份证号
+ * 15位身份证号和18位
  */
-//15位身份证号和18位
 var isID = /^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/;
 function testID(IDcard){
 	if(!IDcard) return;
 	var num = IDcard.trim();
 	if(isID.test(num)){
+		return true;
+	}else{
+		return false;
+	}
+}
+/*
+ * 验证银行卡卡号
+ * @Param bCard：身份证号
+ * 16位或者19位
+ */
+var isBC = /^(\d{16}|\d{19})$/;
+function testBCard(bCard){
+	if(!bCard) return;
+	var num = bCard.trim();
+	if(isBC.test(num)){
 		return true;
 	}else{
 		return false;
@@ -113,12 +127,12 @@ function formatDate(data){
  * 为空提示
  * @Params value:判断值，tips:提示
  */
-function isEmpty(value,tips){
-	if(!value){
-		alert(tips?tips:"请填写");
-		return;
-	}
-}
+//function isEmpty(value,tips){
+//	if(!value){
+//		alert(tips?tips:"请填写");
+//		return;
+//	}
+//}
 // 监听缓存中数据变化,当数据发生变化时,同步数据显示
 window.onstorage = function(event){
 	var status = {}
@@ -224,7 +238,7 @@ function checkPas(pwd,el){
 	var L_color = "#d51423";
 	var M_color = "#f90";
 	var H_color = "#3c0";
-	if (pwd==null||pwd==''){    
+	if (pwd==null||pwd==''){
 		Lcolor = Mcolor = Hcolor = Default_color;
     }
     else{    
@@ -305,7 +319,7 @@ function countDownReg(el){
 }
 //判断是否为空
 function isNull(passWd){
-    str = $.trim(passWd);
+    str = passWd;
     if(!str || str=="" || str=="null" || str=="undefined")
         return true;
     return false;
@@ -330,8 +344,61 @@ function isNumber(keyCode){
 	if(keyCode >= 48 && keyCode <= 57)return true;
 	//小数字键盘
 	if(keyCode >= 96 && keyCode <= 105)return true;
-	//backspace,del,左右方向键
-	if(keyCode == 8 || keyCode == 46 || keyCode == 37 || keyCode == 39) return true;
+	//backspace,del,左右方向键,小数点
+	if(keyCode == 8 || keyCode == 46 || keyCode == 37 || keyCode == 39 || keyCode==190 || keyCode == 110) return true;
 	
 	return false;
+}
+/** 
+* 禁止空格输入 
+* @param e 
+* @returns {Boolean} 
+*/ 
+function banInputSapce(e){ 
+	var keynum; 
+	if(window.event) // IE 
+	{ 
+		keynum = e.keyCode ;
+	} 
+	else if(e.which) // Netscape/Firefox/Opera 
+	{ 
+		keynum = e.which ;
+	} 
+	if(keynum == 32){ 
+		alerts("不允许输入空格");
+		return;
+	} 
+	return; 
+}
+/*
+ * 密码只能输入数字字母
+ * @param value   输入的值
+ * @returns {Boolean} 
+ */
+var testBlank = /^[0-9a-zA-Z]{6,20}$/;
+function testPas(value,el){
+	if(!value) return;
+	if(testBlank.test(value)){
+		return true;
+	}else{
+		alerts("密码为6-20位数字、字母或数字与字母组合");
+		$(el).val("");
+		return false;
+	}
+}
+/*
+ * 判断验证码格式的正则
+ * @param value   输入的值
+ * @returns {Boolean} 
+ */
+var isCode = /^[0-9a-zA-Z]{6}$/;
+function testCode(value,el){
+	if(!value) return;
+	if(isCode.test(value)){
+		return true;
+	}else{
+		alerts("验证码输入不正确");
+		$(el).val("");
+		return false;
+	}
 }
